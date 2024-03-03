@@ -59,15 +59,12 @@ namespace AddressBook.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Sex,PhoneNumber,Email,Created,ImageData,ImageType")] Contact contact)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Sex,PhoneNumber,Email,Created,ImageFile")] Contact contact)
         {
             if (ModelState.IsValid)
             {
                 ContactRepo contactRepo = new ContactRepo(_context, _imageService);
-                contactRepo.CreateAsync(contact);
-
-                _context.Add(contact);
-                await _context.SaveChangesAsync();
+                await contactRepo.CreateAsync(contact);
                 return RedirectToAction(nameof(Index));
             }
             return View(contact);

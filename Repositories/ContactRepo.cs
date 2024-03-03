@@ -17,6 +17,12 @@ namespace AddressBook.Repositories
 
         public async Task CreateAsync(Contact contact)
         {
+            if(contact.ImageFile != null)
+            {
+                contact.ImageData = await _imageService.ConvertFileToByteArrayAsync(contact.ImageFile);
+                contact.ImageType = contact.ImageFile.ContentType;
+            }
+
             _context.Add(contact);
             await _context.SaveChangesAsync();
         }
